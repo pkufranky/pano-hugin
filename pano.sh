@@ -8,6 +8,8 @@
 # sudo apt-get install graphviz
 # sudo cpan install Panotools::Script  
 
+# TODO Celeste
+
 usage() {
 	echo "\
   USAGE: $0 <dir>
@@ -18,10 +20,10 @@ usage() {
 d=$1
 test -z "$d" && usage
 
-pushd $d || exit
+pushd $d > /dev/null || exit
 
-rm pano.pto pano.jpg *.tif
-autopano-sift-c --projection 0,50 pano.pto *.jpg
+rm -f pano.pto pano.jpg *.tif
+autopano-sift-c --projection 2,120 --maxmatches 20 pano.pto *.jpg
 #autopano-sift-c --refine --align pano.pto pano.pto
 
 ptoclean -v --output pano.pto pano.pto
@@ -33,7 +35,7 @@ ptovariable --vignetting --response --exposure pano.pto
 vig_optimize -o pano.pto pano.pto
 
 nona -z PACKBITS -r ldr -m TIFF_m -o pano pano.pto
-enblend --compression 100 -o pano.jpg *.tif
+enblend -w --compression 100 -o pano.jpg *.tif
 rm *.tif
 
-popd
+popd > /dev/null
