@@ -23,6 +23,7 @@ test -z "$d" && usage
 pushd $d > /dev/null || exit
 
 rm -f pano.pto pano.jpg *.tif
+rename 's/JPG/jpg/g' *.JPG
 autopano-sift-c --projection 2,120 --maxmatches 20 pano.pto *.jpg
 #autopano-sift-c --refine --align pano.pto pano.pto
 
